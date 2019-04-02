@@ -48,6 +48,7 @@
 #include "dart/gui/osg/render/MeshShapeNode.hpp"
 #include "dart/gui/osg/render/SoftMeshShapeNode.hpp"
 #include "dart/gui/osg/render/LineSegmentShapeNode.hpp"
+#include "dart/gui/osg/render/PointCloudShapeNode.hpp"
 #include "dart/gui/osg/render/WarningShapeNode.hpp"
 
 #include "dart/dynamics/Frame.hpp"
@@ -64,6 +65,7 @@
 #include "dart/dynamics/MeshShape.hpp"
 #include "dart/dynamics/SoftMeshShape.hpp"
 #include "dart/dynamics/LineSegmentShape.hpp"
+#include "dart/dynamics/PointCloudShape.hpp"
 #include "dart/dynamics/SimpleFrame.hpp"
 
 namespace dart {
@@ -282,6 +284,15 @@ void ShapeFrameNode::createShapeNode(
         std::dynamic_pointer_cast<LineSegmentShape>(shape);
     if(lss)
       mRenderShapeNode = new render::LineSegmentShapeNode(lss, this);
+    else
+      warnAboutUnsuccessfulCast(shapeType, mShapeFrame->getName());
+  }
+  else if(PointCloudShape::getStaticType() == shapeType)
+  {
+    std::shared_ptr<PointCloudShape> lss =
+        std::dynamic_pointer_cast<PointCloudShape>(shape);
+    if(lss)
+      mRenderShapeNode = new render::PointCloudShapeNode(lss, this);
     else
       warnAboutUnsuccessfulCast(shapeType, mShapeFrame->getName());
   }
